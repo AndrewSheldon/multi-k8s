@@ -14,8 +14,11 @@ before_install:
   - gcloud config set project eastern-dream-273716
   - gcloud config set compute/zone europe-west2-a
   - gcloud container clusters get-credentials multi-cluster
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
   - docker build -t provardis2020/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true provardis2020/react-test npm run test
 
 deploy:
   provider: script
